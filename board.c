@@ -350,6 +350,14 @@ int main(){
         drawBoard();
     }
 
+    printf("\n ************************************************\n\n");
+    printf("                  MyScrabble\n\n");
+    printf(" ************************************************\n\n");
+
+    printf(" HOW TO PLAY:\n\n");
+    printf("\tThe aim of the game is to spell words with \n\t4 or more letters. Each letter has");
+    printf(" a value,\n\tso therefore, a player's score for a word\n\tis calculated by using these values.\n\n");
+
     startBoard(); //starts game
     getPlayerMove(); //gets players' moves
 
