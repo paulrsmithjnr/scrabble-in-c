@@ -259,35 +259,83 @@ int main(){
         
         printf("SCORES:\n ** Player one: %d points\n ** Player two: %d points\n\n", playersScores[0], playersScores[1]);
         printf("PLAYER ONE'S TURN:\n");
-        printf("\nEnter the letter you would like to play: ");
+        printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
         scanf("%s", letter);
-        while(strcmp(letter, "Quit") != 0) {
+        while((strcmp(letter, "Quit") != 0) || (strcmp(letter, "quit") != 0)) {
             // char* play = getLetter(letter[0]);
             char play = tolower(letter[0]);
+
+            if(isalpha(play) == 0) {
+                printf("\n **** ERROR: Character entered is not a letter! ****\n\n");
+                
+                printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
+                scanf("%s", letter);
+                if((strcmp(letter, "Quit") != 0) || (strcmp(letter, "quit") != 0)) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
 
             printf("\nEnter the x and y coordinates for the position to place the letter\n");
             printf("(in the form 'xy'): ");
             scanf("%s", xy);
 
+            if((isdigit(xy[0]) == 0) || (isdigit(xy[1]) == 0)) {
+                printf("\n **** ERROR: Invalid input! ****\n\n");
+                printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
+                scanf("%s", letter);
+                if((strcmp(letter, "Quit") != 0) || (strcmp(letter, "quit") != 0)) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
+
             int x = xy[0] - '0';
             int y = xy[1] - '0';
-            makePlay(x, y, play);
-            playersScores[currentPlayer] += checkWord(x, y);
-            drawBoard();
-
-            printf("SCORES:\n ** Player one: %d points\n ** Player two: %d points\n\n", playersScores[0], playersScores[1]);
-
-            if(currentPlayer == 0) {
-                currentPlayer = 1;
-                printf("PLAYER TWO'S TURN:\n");
-            } else {
-                currentPlayer = 0;
-                printf("PLAYER ONE'S TURN:\n");
-            }
             
-            printf("\nEnter the letter you would like to play: ");
-            scanf("%s", letter);
+            if (isOnBoard(x, y)) {
+                if(grid[x-1][y-1] == ' ') {
+                    makePlay(x, y, play);
+                    playersScores[currentPlayer] += checkWord(x, y);
+                    drawBoard();
+
+                    printf("SCORES:\n ** Player one: %d points\n ** Player two: %d points\n\n", playersScores[0], playersScores[1]);
+
+                    if(currentPlayer == 0) {
+                        currentPlayer = 1;
+                        printf("PLAYER TWO'S TURN:\n");
+                    } else {
+                        currentPlayer = 0;
+                        printf("PLAYER ONE'S TURN:\n");
+                    }
+                    
+                    printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
+                    scanf("%s", letter);
+                } else {
+                    printf("\n **** ERROR: A letter is already at the given location! ****\n\n");
+                    printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
+                    scanf("%s", letter);
+                    if((strcmp(letter, "Quit") != 0) || (strcmp(letter, "quit") != 0)) {
+                        break;
+                    } else {
+                        continue;
+                    }
+                }
+                
+            } else {
+                printf("\n **** ERROR: Coordinates entered are not on board! ****\n\n");
+                printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
+                scanf("%s", letter);
+                if((strcmp(letter, "Quit") != 0) || (strcmp(letter, "quit") != 0)) {
+                    break;
+                } else {
+                    continue;
+                }
+            }
         }
+            
     }
 
     void startBoard() {
@@ -393,7 +441,7 @@ int calculateScore(char * word) {
 }
 
 int isWord(char word[]) {
-    char words[84000][25];
+    char words[84000][8];
     FILE *pRead;
     pRead = fopen("words.txt", "r");
     int x = 0;
@@ -406,7 +454,7 @@ int isWord(char word[]) {
 		
         while(!feof(pRead))
         {
-            if(strcmp(words[x], word) == 0) {
+            if((strcmp(words[x], word) == 0) && (strlen(words[x])) >= 4) {
                 fclose(pRead);
                 return 1;
             }
