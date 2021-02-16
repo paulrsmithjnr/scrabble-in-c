@@ -23,6 +23,8 @@ int main(){
     //global declaration structure grid
     char grid[NUM_RANGE][NUM_RANGE];
 
+    int playersScores[2] = {0, 0}, currentPlayer = 0;
+
     // Dict * letterScoresP = createLetterScoreDict();
 
     void getNewBoard(){
@@ -71,9 +73,10 @@ int main(){
         return;
     }
 
-    void checkWord(int x, int y) {
+    int checkWord(int x, int y) {
         int a = x - 1;
         int b = y - 1;
+        int score = 0;
         // grid[a][b];
 
         char word[8];
@@ -81,6 +84,8 @@ int main(){
         for (int i = 0; i < 8; i++) {
             word[i] = '\0';
         }
+
+        printf("\nWORDS FOUND:\n");
 
         //left
         int i = 0;
@@ -92,23 +97,173 @@ int main(){
             }
             i++;
         }
-        printf("checkWord: %s\n", word);
-        printf("isWord: %d\n", isWord(word));
-        
+        // printf("checkWord: %s\n", word);
+        // printf("isWord: %d\n", isWord(word));
+        if(isWord(word)) {
+            printf("** %s\n", word);
+            score += calculateScore(word);
+        }
+
+
+        //right
+        i = 0;
+        for (int i = 0; i < 8; i++) {
+            word[i] = '\0';
+        }
+        while (1) {
+            if((grid[a+i][b] == ' ') || ((a+i) > 7)) {
+                break;
+            } else {
+                word[i] = toupper(grid[a+i][b]);
+            }
+            i++;
+        }
+        // printf("checkWord: %s\n", word);
+        // printf("isWord: %d\n", isWord(word));
+        if(isWord(word)) {
+            printf("** %s\n", word);
+            score += calculateScore(word);
+        }
+
+        //up
+        i = 0;
+        for (int i = 0; i < 8; i++) {
+            word[i] = '\0';
+        }
+        while (1) {
+            if((grid[a][b-i] == ' ') || ((b-i) < 0)) {
+                break;
+            } else {
+                word[i] = toupper(grid[a][b-i]);
+            }
+            i++;
+        }
+        // printf("checkWord: %s\n", word);
+        // printf("isWord: %d\n", isWord(word));
+        if(isWord(word)) {
+            printf("** %s\n", word);
+            score += calculateScore(word);
+        }
+
+        //down
+        i = 0;
+        for (int i = 0; i < 8; i++) {
+            word[i] = '\0';
+        }
+        while (1) {
+            if((grid[a][b+i] == ' ') || ((b+i) > 7)) {
+                break;
+            } else {
+                word[i] = toupper(grid[a][b+i]);
+            }
+            i++;
+        }
+        // printf("checkWord: %s\n", word);
+        // printf("isWord: %d\n", isWord(word));
+        if(isWord(word)) {
+            printf("** %s\n", word);
+            score += calculateScore(word);
+        }
+
+        //diagonal - up, left
+        i = 0;
+        for (int i = 0; i < 8; i++) {
+            word[i] = '\0';
+        }
+        while (1) {
+            if((grid[a-i][b-i] == ' ') || ((a-i) < 0) || ((b-i) < 0)) {
+                break;
+            } else {
+                word[i] = toupper(grid[a-i][b-i]);
+            }
+            i++;
+        }
+        // printf("checkWord: %s\n", word);
+        // printf("isWord: %d\n", isWord(word));
+        if(isWord(word)) {
+            printf("** %s\n", word);
+            score += calculateScore(word);
+        }
+
+        //diagonal - up, right
+        i = 0;
+        for (int i = 0; i < 8; i++) {
+            word[i] = '\0';
+        }
+        while (1) {
+            if((grid[a+i][b-i] == ' ') || ((a+i) > 7) || ((b-i) < 0)) {
+                break;
+            } else {
+                word[i] = toupper(grid[a+i][b-i]);
+            }
+            i++;
+        }
+        // printf("checkWord: %s\n", word);
+        // printf("isWord: %d\n", isWord(word));
+        if(isWord(word)) {
+            printf("** %s\n", word);
+            score += calculateScore(word);
+        }
+
+        //diagonal - down, left
+        i = 0;
+        for (int i = 0; i < 8; i++) {
+            word[i] = '\0';
+        }
+        while (1) {
+            if((grid[a-i][b+i] == ' ') || ((a-i) < 0) || ((b+i) > 7)) {
+                break;
+            } else {
+                word[i] = toupper(grid[a-i][b+i]);
+            }
+            i++;
+        }
+        // printf("checkWord: %s\n", word);
+        // printf("isWord: %d\n", isWord(word));
+        if(isWord(word)) {
+            printf("** %s\n", word);
+            score += calculateScore(word);
+        }
+
+        //diagonal - down, right
+        i = 0;
+        for (int i = 0; i < 8; i++) {
+            word[i] = '\0';
+        }
+        while (1) {
+            if((grid[a+i][b+i] == ' ') || ((a+i) > 7) || ((b+i) > 7)) {
+                break;
+            } else {
+                word[i] = toupper(grid[a+i][b+i]);
+            }
+            i++;
+        }
+        // printf("checkWord: %s\n", word);
+        // printf("isWord: %d\n", isWord(word));
+        if(isWord(word)) {
+            printf("** %s\n", word);
+            score += calculateScore(word);
+        }
+
         // for(int i = 0; ; i++) {
         //     // word = grid[a][b-i];
             
         // }
+        printf("\n");
+        return score;
     }
     
     void getPlayerMove() {
         char letter[4];
         char xy[2];
+        
+        printf("SCORES:\n ** Player one: %d points\n ** Player two: %d points\n\n", playersScores[0], playersScores[1]);
+        printf("PLAYER ONE'S TURN:\n");
         printf("\nEnter the letter you would like to play: ");
         scanf("%s", letter);
         while(strcmp(letter, "Quit") != 0) {
             // char* play = getLetter(letter[0]);
-            char play = letter[0];
+            char play = tolower(letter[0]);
 
             printf("\nEnter the x and y coordinates for the position to place the letter\n");
             printf("(in the form 'xy'): ");
@@ -117,9 +272,19 @@ int main(){
             int x = xy[0] - '0';
             int y = xy[1] - '0';
             makePlay(x, y, play);
-            checkWord(x, y);
+            playersScores[currentPlayer] += checkWord(x, y);
             drawBoard();
 
+            printf("SCORES:\n ** Player one: %d points\n ** Player two: %d points\n\n", playersScores[0], playersScores[1]);
+
+            if(currentPlayer == 0) {
+                currentPlayer = 1;
+                printf("PLAYER TWO'S TURN:\n");
+            } else {
+                currentPlayer = 0;
+                printf("PLAYER ONE'S TURN:\n");
+            }
+            
             printf("\nEnter the letter you would like to play: ");
             scanf("%s", letter);
         }
@@ -145,6 +310,17 @@ int main(){
 
     startBoard();
     getPlayerMove();
+
+    printf("\n *** GAME ENDED! *** \n");
+    printf("WINNER: ");
+
+    if(playersScores[0] > playersScores[1]) {
+        printf("Player one with %d points\n", playersScores[0]);
+    } else if(playersScores[0] < playersScores[1]) {
+        printf("Player two with %d points\n", playersScores[1]);
+    } else {
+        printf("Players one and two (TIE) with %d points\n", playersScores[0]);
+    }
 
 
     // while(1) {
@@ -230,13 +406,13 @@ int isWord(char word[]) {
 		
         while(!feof(pRead))
         {
-            x++;
-            fscanf(pRead, "%s\n", words[x]);
             if(strcmp(words[x], word) == 0) {
                 fclose(pRead);
                 return 1;
             }
 
+            x++;
+            fscanf(pRead, "%s\n", words[x]);
         }
         fclose(pRead);
     }
