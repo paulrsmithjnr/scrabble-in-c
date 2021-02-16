@@ -1,15 +1,13 @@
+/*
+Paul Smith
+620118115
+*/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
 
-// typedef struct dictionary {
-//     char key;
-//     int value;
-// } Dict;
-
-// Dict * createLetterScoreDict();
-// int getLetterScore(Dict * letterScores, char letter);
+//Function Declarations
 int calculateScore(char * word);
 int isOnBoard(int x, int y);
 int getLetterScore(char letter);
@@ -20,12 +18,13 @@ int main(){
 
     int k,j;
     int const NUM_RANGE=8;
+
     //global declaration structure grid
     char grid[NUM_RANGE][NUM_RANGE];
 
+    //variables to help keep track of the current player and the players' scores
     int playersScores[2] = {0, 0}, currentPlayer = 0;
 
-    // Dict * letterScoresP = createLetterScoreDict();
 
     void getNewBoard(){
         //creates a brand new blank board. Returns a pointer to the array 
@@ -73,199 +72,190 @@ int main(){
         return;
     }
 
-    int checkWord(int x, int y) {
+    //This function checks every direction to see if the last  
+    //letter entered starts a word (diagonals are included)
+    int checkWords(int x, int y) {
         int a = x - 1;
         int b = y - 1;
-        int score = 0;
-        // grid[a][b];
+        int score = 0; //Keeps track of the score generated from all the words found
 
+        //declares and initializes the string
         char word[8];
-        // strcpy(word, "");
         for (int i = 0; i < 8; i++) {
             word[i] = '\0';
         }
 
         printf("\nWORDS FOUND:\n");
 
-        //left
+        //checks if the last letter entered starts a word that goes toward the left
         int i = 0;
         while (1) {
-            if((grid[a-i][b] == ' ') || ((a-i) < 0)) {
+            if((grid[a-i][b] == ' ') || ((a-i) < 0)) { //if the current spot on the grid is empty or the location is out of bounds...
                 break;
             } else {
-                word[i] = toupper(grid[a-i][b]);
+                word[i] = toupper(grid[a-i][b]); //stores all characters found in the word array
             }
             i++;
         }
-        // printf("checkWord: %s\n", word);
-        // printf("isWord: %d\n", isWord(word));
+        //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
             printf("** %s\n", word);
             score += calculateScore(word);
         }
 
 
-        //right
+        //checks if the last letter entered starts a word that goes toward the right
         i = 0;
         for (int i = 0; i < 8; i++) {
             word[i] = '\0';
         }
         while (1) {
-            if((grid[a+i][b] == ' ') || ((a+i) > 7)) {
+            if((grid[a+i][b] == ' ') || ((a+i) > 7)) { //if the current spot on the grid is empty or the location is out of bounds...
                 break;
             } else {
-                word[i] = toupper(grid[a+i][b]);
+                word[i] = toupper(grid[a+i][b]); //stores all characters found in the word array
             }
             i++;
         }
-        // printf("checkWord: %s\n", word);
-        // printf("isWord: %d\n", isWord(word));
+        //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
             printf("** %s\n", word);
             score += calculateScore(word);
         }
 
-        //up
+        //checks if the last letter entered starts a word that goes up
         i = 0;
         for (int i = 0; i < 8; i++) {
             word[i] = '\0';
         }
         while (1) {
-            if((grid[a][b-i] == ' ') || ((b-i) < 0)) {
+            if((grid[a][b-i] == ' ') || ((b-i) < 0)) { //if the current spot on the grid is empty or the location is out of bounds...
                 break;
             } else {
-                word[i] = toupper(grid[a][b-i]);
+                word[i] = toupper(grid[a][b-i]); //stores all characters found in the word array
             }
             i++;
         }
-        // printf("checkWord: %s\n", word);
-        // printf("isWord: %d\n", isWord(word));
+        //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
             printf("** %s\n", word);
             score += calculateScore(word);
         }
 
-        //down
+        //checks if the last letter entered starts a word that goes down
         i = 0;
         for (int i = 0; i < 8; i++) {
             word[i] = '\0';
         }
         while (1) {
-            if((grid[a][b+i] == ' ') || ((b+i) > 7)) {
+            if((grid[a][b+i] == ' ') || ((b+i) > 7)) { //if the current spot on the grid is empty or the location is out of bounds...
                 break;
             } else {
-                word[i] = toupper(grid[a][b+i]);
+                word[i] = toupper(grid[a][b+i]); //stores all characters found in the word array
             }
             i++;
         }
-        // printf("checkWord: %s\n", word);
-        // printf("isWord: %d\n", isWord(word));
+        //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
             printf("** %s\n", word);
             score += calculateScore(word);
         }
 
-        //diagonal - up, left
+        //checks if the last letter entered starts a word that runs diagonally - up, left
         i = 0;
         for (int i = 0; i < 8; i++) {
             word[i] = '\0';
         }
         while (1) {
-            if((grid[a-i][b-i] == ' ') || ((a-i) < 0) || ((b-i) < 0)) {
+            if((grid[a-i][b-i] == ' ') || ((a-i) < 0) || ((b-i) < 0)) { //if the current spot on the grid is empty or the location is out of bounds...
                 break;
             } else {
-                word[i] = toupper(grid[a-i][b-i]);
+                word[i] = toupper(grid[a-i][b-i]); //stores all characters found in the word array
             }
             i++;
         }
-        // printf("checkWord: %s\n", word);
-        // printf("isWord: %d\n", isWord(word));
+        //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
             printf("** %s\n", word);
             score += calculateScore(word);
         }
 
-        //diagonal - up, right
+        //checks if the last letter entered starts a word that runs diagonally - up, right
         i = 0;
         for (int i = 0; i < 8; i++) {
             word[i] = '\0';
         }
         while (1) {
-            if((grid[a+i][b-i] == ' ') || ((a+i) > 7) || ((b-i) < 0)) {
+            if((grid[a+i][b-i] == ' ') || ((a+i) > 7) || ((b-i) < 0)) { //if the current spot on the grid is empty or the location is out of bounds...
                 break;
             } else {
-                word[i] = toupper(grid[a+i][b-i]);
+                word[i] = toupper(grid[a+i][b-i]); //stores all characters found in the word array
             }
             i++;
         }
-        // printf("checkWord: %s\n", word);
-        // printf("isWord: %d\n", isWord(word));
+        //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
             printf("** %s\n", word);
             score += calculateScore(word);
         }
 
-        //diagonal - down, left
+        //checks if the last letter entered starts a word that runs diagonally - down, left
         i = 0;
         for (int i = 0; i < 8; i++) {
             word[i] = '\0';
         }
         while (1) {
-            if((grid[a-i][b+i] == ' ') || ((a-i) < 0) || ((b+i) > 7)) {
+            if((grid[a-i][b+i] == ' ') || ((a-i) < 0) || ((b+i) > 7)) { //if the current spot on the grid is empty or the location is out of bounds...
                 break;
             } else {
-                word[i] = toupper(grid[a-i][b+i]);
+                word[i] = toupper(grid[a-i][b+i]); //stores all characters found in the word array
             }
             i++;
         }
-        // printf("checkWord: %s\n", word);
-        // printf("isWord: %d\n", isWord(word));
+        //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
             printf("** %s\n", word);
             score += calculateScore(word);
         }
 
-        //diagonal - down, right
+        //checks if the last letter entered starts a word that runs diagonally - down, right
         i = 0;
         for (int i = 0; i < 8; i++) {
             word[i] = '\0';
         }
         while (1) {
-            if((grid[a+i][b+i] == ' ') || ((a+i) > 7) || ((b+i) > 7)) {
+            if((grid[a+i][b+i] == ' ') || ((a+i) > 7) || ((b+i) > 7)) { //if the current spot on the grid is empty or the location is out of bounds...
                 break;
             } else {
-                word[i] = toupper(grid[a+i][b+i]);
+                word[i] = toupper(grid[a+i][b+i]); //stores all characters found in the word array
             }
             i++;
         }
-        // printf("checkWord: %s\n", word);
-        // printf("isWord: %d\n", isWord(word));
+        //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
             printf("** %s\n", word);
             score += calculateScore(word);
         }
 
-        // for(int i = 0; ; i++) {
-        //     // word = grid[a][b-i];
-            
-        // }
         printf("\n");
         return score;
     }
     
+    //This function repeatedly prompts the players to enter 
+    //their moves and keeps track of their scores until someone ends the game
     void getPlayerMove() {
-        char letter[4];
-        char xy[2];
+        char letter[4]; //to store the players' moves
+        char xy[2]; //to store coordinates
         
         printf("SCORES:\n ** Player one: %d points\n ** Player two: %d points\n\n", playersScores[0], playersScores[1]);
         printf("PLAYER ONE'S TURN:\n");
         printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
         scanf("%s", letter);
-        while((strcmp(letter, "Quit") != 0) || (strcmp(letter, "quit") != 0)) {
-            // char* play = getLetter(letter[0]);
+        while((strcmp(letter, "Quit") != 0) || (strcmp(letter, "quit") != 0)) { //while the current player has not ended the game
+
             char play = tolower(letter[0]);
 
-            if(isalpha(play) == 0) {
+            if(isalpha(play) == 0) { //if they character entered is not a letter
                 printf("\n **** ERROR: Character entered is not a letter! ****\n\n");
                 
                 printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
@@ -281,7 +271,7 @@ int main(){
             printf("(in the form 'xy'): ");
             scanf("%s", xy);
 
-            if((isdigit(xy[0]) == 0) || (isdigit(xy[1]) == 0)) {
+            if((isdigit(xy[0]) == 0) || (isdigit(xy[1]) == 0)) { //if the coordinates input contains a non-digit character
                 printf("\n **** ERROR: Invalid input! ****\n\n");
                 printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
                 scanf("%s", letter);
@@ -292,17 +282,20 @@ int main(){
                 }
             }
 
+            //converts the coordinates input to actual intergers
             int x = xy[0] - '0';
             int y = xy[1] - '0';
             
-            if (isOnBoard(x, y)) {
-                if(grid[x-1][y-1] == ' ') {
+            if (isOnBoard(x, y)) {//if the coordinates entered are not out of bounds
+                if(grid[x-1][y-1] == ' ') { //if the referenced location does not have a letter
                     makePlay(x, y, play);
-                    playersScores[currentPlayer] += checkWord(x, y);
+                    playersScores[currentPlayer] += checkWords(x, y); //increments the current player's score based on the scores of the words found
                     drawBoard();
 
+                    //displays scores
                     printf("SCORES:\n ** Player one: %d points\n ** Player two: %d points\n\n", playersScores[0], playersScores[1]);
 
+                    //switches to current player based on the previous player
                     if(currentPlayer == 0) {
                         currentPlayer = 1;
                         printf("PLAYER TWO'S TURN:\n");
@@ -313,7 +306,7 @@ int main(){
                     
                     printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
                     scanf("%s", letter);
-                } else {
+                } else { //if the referenced location already has a letter
                     printf("\n **** ERROR: A letter is already at the given location! ****\n\n");
                     printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
                     scanf("%s", letter);
@@ -324,7 +317,7 @@ int main(){
                     }
                 }
                 
-            } else {
+            } else { //if the coordinates entered are out of bounds
                 printf("\n **** ERROR: Coordinates entered are not on board! ****\n\n");
                 printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
                 scanf("%s", letter);
@@ -338,17 +331,18 @@ int main(){
             
     }
 
+    //This function starts the game by randomly placing ten letters on the board
     void startBoard() {
         getNewBoard();
         
-        // char *alphabet[26] = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"};
         char alphabet[26] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
 
+        //the randomization is done here
         for(int i = 0; i < 10; i++) {
-            int x = (rand()%8) + 1;
-            int y = (rand()%8) + 1;
+            int x = (rand()%8) + 1; //randomly chooses a number between 1 and 8
+            int y = (rand()%8) + 1; //randomly chooses a number between 1 and 8
 
-            int cIndex = rand()%26;
+            int cIndex = rand()%26; //randomly chooses an index between 0 and 25
             char character = alphabet[cIndex];
             
             makePlay(x, y, character);
@@ -356,12 +350,14 @@ int main(){
         drawBoard();
     }
 
-    startBoard();
-    getPlayerMove();
+    startBoard(); //starts game
+    getPlayerMove(); //gets players' moves
 
+    //when the game has ended
     printf("\n *** GAME ENDED! *** \n");
     printf("WINNER: ");
 
+    //displays winner(s) and their score(s)
     if(playersScores[0] > playersScores[1]) {
         printf("Player one with %d points\n", playersScores[0]);
     } else if(playersScores[0] < playersScores[1]) {
@@ -369,56 +365,6 @@ int main(){
     } else {
         printf("Players one and two (TIE) with %d points\n", playersScores[0]);
     }
-
-
-    // while(1) {
-        
-
-    //     // printf("\nLetter entered: %s\n", play);
-    //     // printf("strlen(play) = %ld\n", strlen(play));
-    //     printf("Letter: %c\n", play);
-    //     printf("Address: %s\n", &play);
-
-        
-    //     printf("Outside function - Grid letter: %s\n", grid[7][7]);
-
-    //     drawBoard();
-    //     play = getPlayerMove();
-    // }
-    // drawBoard();
-    // printf("%s\n", getPlayerMove());
-    // while(strcmp(xy, "0") != 0) {
-    //     char *play = getPlayerMove();
-    //     int x = xy[0] - '0';
-    //     int y = xy[1] - '0';
-    //     printf("(%d, %d)\n", x, y);
-    //     makePlay(x, y, play);
-    //     printf("Play: %s\n", play);
-    //     drawBoard();
-    // }
-    
-    
-    // getNewBoard();
-    // drawBoard();
-    //notice the use of spaces
-    // makePlay(3,7,"a");    
-    // makePlay(4,5,"b");    
-    // drawBoard();
-
-    // /*Testing purposes*/
-    // printf("\n\n");
-    // getPlayerMove();
-    // int x = xy[0] - '0';
-    // int y = xy[1] - '0';
-    // printf("%d\n", isOnBoard(x, y));
-    // Dict * letterScoresP = createLetterScoreDict();
-    // printf("Q: %d\n", getLetterScore(letterScoresP, 'Q'));
-    // printf("K: %d\n", getLetterScore(letterScoresP, 'K'));
-    // printf("Z: %d\n", getLetterScore(letterScoresP, 'Z'));
-
-    // printf("%d\n", calculateScore("cat"));
-    // printf("%d\n", calculateScore("thing"));
-    // printf("%d\n", calculateScore("it"));
 
     return 0;
 }
@@ -440,43 +386,51 @@ int calculateScore(char * word) {
     return score;
 }
 
+//this function checks the word passed to it against all the words
+//in the words.txt file to see if it is an actual word
 int isWord(char word[]) {
-    char words[84000][8];
-    FILE *pRead;
-    pRead = fopen("words.txt", "r");
-    int x = 0;
-    if (pRead == NULL) 
+
+    char words[84000][8]; //declares string array to store words read from the file
+    FILE *pRead; //declares file pointer
+
+    pRead = fopen("words.txt", "r"); //opens file with the mode that allows its content to be read
+
+    int x = 0; //counter
+    if (pRead == NULL) //if file was not found
 		printf("\n File not opened\n"); 
 	else 
 
 	{
-        fscanf(pRead, "%s\n", words[x]);
+        fscanf(pRead, "%s\n", words[x]); //reads word from file and stores it in array
 		
-        while(!feof(pRead))
+        while(!feof(pRead)) //while not at the end of the file...
         {
-            if((strcmp(words[x], word) == 0) && (strlen(words[x])) >= 4) {
-                fclose(pRead);
-                return 1;
+            if((strcmp(words[x], word) == 0) && (strlen(words[x])) >= 4) { //if the word has at least 4 letters and is found in the file...
+                fclose(pRead); //closes file
+                return 1; //true
             }
 
-            x++;
-            fscanf(pRead, "%s\n", words[x]);
+            x++; //increments counter
+            fscanf(pRead, "%s\n", words[x]); //reads next word from file and stores it in array
         }
-        fclose(pRead);
+        fclose(pRead); //closes file
     }
-    return 0;
+    return 0; //false
 }
 
+//The functions checks to see if the coordinates passed
+//to it are out of bounds
 int isOnBoard(int x, int y) {
-    int returnVal = 1;
+    int returnVal = 1; //true
 
-    if(((x < 1) || (x > 8)) || ((y < 1) || (y > 8))) {
-        returnVal = 0;
+    if(((x < 1) || (x > 8)) || ((y < 1) || (y > 8))) { //if location is out of bounds
+        returnVal = 0; //false
     }
 
     return returnVal;
 }
 
+//This function returns the associated score of the letter passed to it based on the switch statement inside
 int getLetterScore(char letter) {
     int score;
     switch (letter) {
@@ -611,238 +565,10 @@ int getLetterScore(char letter) {
             break;
 
         default:
-            printf("ERROR: Character entered is not a letter.");
+            printf("\nERROR: Character entered is not a letter.\n");
             score = 0;
             break;
     }
 
     return score;
 }
-
-char* getLetter(char letter) {
-    // char *character;
-    switch (letter) {
-        case 'A':
-        case 'a':
-            return "a";
-
-        case 'B':
-        case 'b':
-            return "b";
-
-        case 'C':
-        case 'c':
-            return "c";
-
-        case 'D':
-        case 'd':
-            return "d";
-
-        case 'E':
-        case 'e':
-            return "e";
-
-        case 'F':
-        case 'f':
-            return "f";
-
-        case 'G':
-        case 'g':
-            return "g";
-
-        case 'H':
-        case 'h':
-            return "h";
-
-        case 'I':
-        case 'i':
-            return "i";
-
-        case 'J':
-        case 'j':
-            return "j";
-
-        case 'K':
-        case 'k':
-            return "k";
-
-        case 'L':
-        case 'l':
-            return "l";
-
-        case 'M':
-        case 'm':
-            return "m";
-
-        case 'N':
-        case 'n':
-            return "n";
-
-        case 'O':
-        case 'o':
-            return "o";
-
-        case 'P':
-        case 'p':
-            return "p";
-
-        case 'Q':
-        case 'q':
-            return "q";
-
-        case 'R':
-        case 'r':
-            return "r";
-
-        case 'S':
-        case 's':
-            return "s";
-
-        case 'T':
-        case 't':
-            return "t";
-
-        case 'U':
-        case 'u':
-            return "u";
-        
-        case 'V':
-        case 'v':
-            return "v";
-
-        case 'W':
-        case 'w':
-            return "w";
-
-        case 'X':
-        case 'x':
-            return "x";
-
-        case 'Y':
-        case 'y':
-            return "y";
-
-        case 'Z':
-        case 'z':
-            return "z";
-
-        default:
-            printf("ERROR: Character entered is not a letter.");
-            break;
-    }
-}
-
-
-/* 
-This function returns a pointer to an array of the dictionary 
-structure that stores the letter and its corresponding score 
-*/
-// Dict * createLetterScoreDict() {
-//     static Dict letterScores[26];
-
-//     letterScores[0].key = 'A';
-//     letterScores[0].value = 1;
-
-//     letterScores[1].key = 'B';
-//     letterScores[1].value = 3;
-
-//     letterScores[2].key = 'C';
-//     letterScores[2].value = 3;
-
-//     letterScores[3].key = 'D';
-//     letterScores[3].value = 2;
-
-//     letterScores[4].key = 'E';
-//     letterScores[4].value = 1;
-
-//     letterScores[5].key = 'F';
-//     letterScores[5].value = 4;
-
-//     letterScores[6].key = 'G';
-//     letterScores[6].value = 2;
-
-//     letterScores[7].key = 'H';
-//     letterScores[7].value = 4;
-
-//     letterScores[8].key = 'I';
-//     letterScores[8].value = 1;
-
-//     letterScores[9].key = 'J';
-//     letterScores[9].value = 8;
-
-//     letterScores[10].key = 'K';
-//     letterScores[10].value = 5;
-
-//     letterScores[11].key = 'L';
-//     letterScores[11].value = 1;
-
-//     letterScores[12].key = 'M';
-//     letterScores[12].value = 3;
-
-//     letterScores[13].key = 'N';
-//     letterScores[13].value = 1;
-
-//     letterScores[14].key = 'O';
-//     letterScores[14].value = 1;
-
-//     letterScores[15].key = 'P';
-//     letterScores[15].value = 3;
-
-//     letterScores[16].key = 'Q';
-//     letterScores[16].value = 10;
-
-//     letterScores[17].key = 'R';
-//     letterScores[17].value = 1;
-
-//     letterScores[18].key = 'S';
-//     letterScores[18].value = 1;
-
-//     letterScores[19].key = 'T';
-//     letterScores[19].value = 1;
-
-//     letterScores[20].key = 'U';
-//     letterScores[20].value = 1;
-
-//     letterScores[21].key = 'V';
-//     letterScores[21].value = 4;
-
-//     letterScores[22].key = 'W';
-//     letterScores[22].value = 4;
-
-//     letterScores[23].key = 'X';
-//     letterScores[23].value = 8;
-
-//     letterScores[24].key = 'Y';
-//     letterScores[24].value = 4;
-
-//     letterScores[25].key = 'Z';
-//     letterScores[25].value = 10;
-
-//     return letterScores;
-//     //This doesn't return the array itself but instead returns a pointer to
-//     //the first element in the array, hence the return type of the function.
-// }
-
- /*
-This function takes as paramters a pointer to an array of the dictionary 
-structure that stores letters and their corresponding scores, and the letter
-being queried.
- */
-// int getLetterScore(Dict * letterScoresP, char letter) {
-//     Dict letterScore; //creates an instance of the dictionary structure
-//     // int size = 5;
-//     const int SIZE = 26;
-//     for(int i = 0; i < SIZE; i++) {
-
-//         letterScore = * (letterScoresP + i); 
-//         //assigns the key, value pair of the array element stored and address being pointed to
-//         //in the letterScore variable
-//         //NB: This works since the elements of the letterScores array are stored in contigious blocks
-//         //    in memory. So, incrementing the address stored in the pointer by the value stored in i
-//         //    results in the overall sum pointing to the next element of the dictionary structure array.
-
-//         if(letterScore.key == letter) {
-//             return letterScore.value;
-//         }
-//     }
-// }
