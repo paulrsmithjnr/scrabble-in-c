@@ -72,6 +72,19 @@ int main(){
         return;
     }
 
+
+    //This functions to see if the board is full; returns 1 if it is and 0 if it is not
+    int isBoardFull() {
+        for(int a = 0; a < NUM_RANGE; a++) {
+            for(int b = 0; b < NUM_RANGE; b++) {
+                if(grid[a][b] == ' ') {
+                    return 0;
+                }
+            }
+        } 
+        return 1;
+    }
+
     //This function checks every direction to see if the last  
     //letter entered starts a word (diagonals are included)
     int checkWords(int x, int y) {
@@ -251,9 +264,8 @@ int main(){
         printf("PLAYER ONE'S TURN:\n");
         printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
         scanf("%s", letter);
-        // while((strcmp(letter, "Quit") != 0) || (strcmp(letter, "quit") != 0)) { //was not working for some strange reason
+
         while(1) { //loop infinitely
-            printf("%s", letter);
             char play = tolower(letter[0]);
 
             if(isalpha(play) == 0) { //if they character entered is not a letter
@@ -262,7 +274,7 @@ int main(){
                 printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
                 scanf("%s", letter);
                 if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) { //if the current play entered "Quit" or "quit"
-                    break;
+                    return;
                 } else {
                     continue;
                 }
@@ -277,7 +289,7 @@ int main(){
                 printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
                 scanf("%s", letter);
                 if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) {
-                    break;
+                    return;
                 } else {
                     continue;
                 }
@@ -297,27 +309,28 @@ int main(){
                     printf("SCORES:\n ** Player one: %d points\n ** Player two: %d points\n\n", playersScores[0], playersScores[1]);
 
                     //switches to current player based on the previous player
-                    if(currentPlayer == 0) {
+                    if(isBoardFull()) { //if the board is full
+                        printf(" **** The board is now full! ****\n");
+                        return;
+                    } else if(currentPlayer == 0) {
                         currentPlayer = 1;
                         printf("PLAYER TWO'S TURN:\n");
                     } else {
                         currentPlayer = 0;
                         printf("PLAYER ONE'S TURN:\n");
                     }
-                    
+
                     printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
                     scanf("%s", letter);
                     if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) { 
-                        break;
+                        return;
                     }
-                    printf("%d", strcmp(letter, "Quit"));
-
                 } else { //if the referenced location already has a letter
                     printf("\n **** ERROR: A letter is already at the given location! ****\n\n");
                     printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
                     scanf("%s", letter);
                     if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) {
-                        break;
+                        return;
                     } else {
                         continue;
                     }
@@ -328,13 +341,14 @@ int main(){
                 printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
                 scanf("%s", letter);
                 if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) {
-                    break;
+                    return;
                 } else {
                     continue;
                 }
             }
-        }
+
             
+        }
     }
 
     //This function starts the game by randomly placing ten letters on the board
@@ -353,6 +367,7 @@ int main(){
             
             makePlay(x, y, character);
         }
+
         drawBoard();
     }
 
@@ -385,13 +400,6 @@ int main(){
 
 int calculateScore(char * word) {
     int score = 0;
-    // Dict * letterScoresP = createLetterScoreDict();
-    // printf("\nLength of word: %d\n", (int) strlen(word));
-    // for(int i = 0; i < strlen(word); i++) {
-    //     char letter = *(word + i);
-    //     printf("%c %d\n", letter, getLetterScore(letterScoresP, letter));
-    //     score += getLetterScore(letterScoresP, letter);
-    // }
 
     for(int i = 0; i < strlen(word); i++) {
         score += getLetterScore(word[i]);
