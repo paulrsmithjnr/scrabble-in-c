@@ -251,8 +251,9 @@ int main(){
         printf("PLAYER ONE'S TURN:\n");
         printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
         scanf("%s", letter);
-        while((strcmp(letter, "Quit") != 0) || (strcmp(letter, "quit") != 0)) { //while the current player has not ended the game
-
+        // while((strcmp(letter, "Quit") != 0) || (strcmp(letter, "quit") != 0)) { //was not working for some strange reason
+        while(1) { //loop infinitely
+            printf("%s", letter);
             char play = tolower(letter[0]);
 
             if(isalpha(play) == 0) { //if they character entered is not a letter
@@ -260,7 +261,7 @@ int main(){
                 
                 printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
                 scanf("%s", letter);
-                if((strcmp(letter, "Quit") != 0) || (strcmp(letter, "quit") != 0)) {
+                if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) { //if the current play entered "Quit" or "quit"
                     break;
                 } else {
                     continue;
@@ -275,7 +276,7 @@ int main(){
                 printf("\n **** ERROR: Invalid input! ****\n\n");
                 printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
                 scanf("%s", letter);
-                if((strcmp(letter, "Quit") != 0) || (strcmp(letter, "quit") != 0)) {
+                if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) {
                     break;
                 } else {
                     continue;
@@ -306,11 +307,16 @@ int main(){
                     
                     printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
                     scanf("%s", letter);
+                    if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) { 
+                        break;
+                    }
+                    printf("%d", strcmp(letter, "Quit"));
+
                 } else { //if the referenced location already has a letter
                     printf("\n **** ERROR: A letter is already at the given location! ****\n\n");
                     printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
                     scanf("%s", letter);
-                    if((strcmp(letter, "Quit") != 0) || (strcmp(letter, "quit") != 0)) {
+                    if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) {
                         break;
                     } else {
                         continue;
@@ -321,7 +327,7 @@ int main(){
                 printf("\n **** ERROR: Coordinates entered are not on board! ****\n\n");
                 printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
                 scanf("%s", letter);
-                if((strcmp(letter, "Quit") != 0) || (strcmp(letter, "quit") != 0)) {
+                if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) {
                     break;
                 } else {
                     continue;
