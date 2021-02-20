@@ -73,7 +73,7 @@ int main(){
     }
 
 
-    //This functions to see if the board is full; returns 1 if it is and 0 if it is not
+    //This function checks to see if the board is full; returns 1 if it is and 0 if it is not
     int isBoardFull() {
         for(int a = 0; a < NUM_RANGE; a++) {
             for(int b = 0; b < NUM_RANGE; b++) {
@@ -255,7 +255,8 @@ int main(){
     }
     
     //This function repeatedly prompts the players to enter 
-    //their moves and keeps track of their scores until someone ends the game
+    //their moves and keeps track of their scores until either someone ends the game
+    //or the board is full
     void getPlayerMove() {
         char letter[4]; //to store the players' moves
         char xy[2]; //to store coordinates
@@ -398,6 +399,8 @@ int main(){
     return 0;
 }
 
+//This function calculates the score for the word passed to it
+//based on the sum of the associated scores of its letters
 int calculateScore(char * word) {
     int score = 0;
 
@@ -408,7 +411,7 @@ int calculateScore(char * word) {
     return score;
 }
 
-//this function checks the word passed to it against all the words
+//This function checks the word passed to it against all the words
 //in the words.txt file to see if it is an actual word
 int isWord(char word[]) {
 
@@ -440,7 +443,7 @@ int isWord(char word[]) {
     return 0; //false
 }
 
-//The functions checks to see if the coordinates passed
+//This function checks to see if the coordinates passed
 //to it are out of bounds
 int isOnBoard(int x, int y) {
     int returnVal = 1; //true
