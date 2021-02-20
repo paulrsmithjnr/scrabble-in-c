@@ -22,6 +22,10 @@ int main(){
     //global declaration structure grid
     char grid[NUM_RANGE][NUM_RANGE];
 
+    char *wordsFound[70];
+    int player[70];
+    int nextIndex = 0;
+
     //variables to help keep track of the current player and the players' scores
     int playersScores[2] = {0, 0}, currentPlayer = 0;
 
@@ -85,6 +89,17 @@ int main(){
         return 1;
     }
 
+
+    //This function adds a word found on the grid to the "wordsFound" array
+    void addWord(char *word) {
+        wordsFound[nextIndex] = malloc(strlen(word));
+        strcpy(wordsFound[nextIndex], word);
+
+        player[nextIndex] = currentPlayer;
+
+        nextIndex++;
+    }
+
     //This function checks every direction to see if the last  
     //letter entered starts a word (diagonals are included)
     int checkWords(int x, int y) {
@@ -92,13 +107,14 @@ int main(){
         int b = y - 1;
         int score = 0; //Keeps track of the score generated from all the words found
 
+        int wordFoundFlag = 0; //changes to 1 when a word is found
+        int index = nextIndex, wordCount = 0;
+
         //declares and initializes the string
         char word[8];
         for (int i = 0; i < 8; i++) {
             word[i] = '\0';
         }
-
-        printf("\nWORDS FOUND:\n");
 
         //checks if the last letter entered starts a word that goes toward the left
         int i = 0;
@@ -112,8 +128,10 @@ int main(){
         }
         //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
-            printf("** %s\n", word);
+            addWord(word);
             score += calculateScore(word);
+            wordFoundFlag = 1;
+            wordCount++;
         }
 
 
@@ -132,8 +150,10 @@ int main(){
         }
         //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
-            printf("** %s\n", word);
+            addWord(word);
             score += calculateScore(word);
+            wordFoundFlag = 1;
+            wordCount++;
         }
 
         //checks if the last letter entered starts a word that goes up
@@ -151,8 +171,10 @@ int main(){
         }
         //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
-            printf("** %s\n", word);
+            addWord(word);
             score += calculateScore(word);
+            wordFoundFlag = 1;
+            wordCount++;
         }
 
         //checks if the last letter entered starts a word that goes down
@@ -170,8 +192,10 @@ int main(){
         }
         //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
-            printf("** %s\n", word);
+            addWord(word);
             score += calculateScore(word);
+            wordFoundFlag = 1;
+            wordCount++;
         }
 
         //checks if the last letter entered starts a word that runs diagonally - up, left
@@ -189,8 +213,10 @@ int main(){
         }
         //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
-            printf("** %s\n", word);
+            addWord(word);
             score += calculateScore(word);
+            wordFoundFlag = 1;
+            wordCount++;
         }
 
         //checks if the last letter entered starts a word that runs diagonally - up, right
@@ -208,8 +234,10 @@ int main(){
         }
         //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
-            printf("** %s\n", word);
+            addWord(word);
             score += calculateScore(word);
+            wordFoundFlag = 1;
+            wordCount++;
         }
 
         //checks if the last letter entered starts a word that runs diagonally - down, left
@@ -227,8 +255,10 @@ int main(){
         }
         //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
-            printf("** %s\n", word);
+            addWord(word);
             score += calculateScore(word);
+            wordFoundFlag = 1;
+            wordCount++;
         }
 
         //checks if the last letter entered starts a word that runs diagonally - down, right
@@ -246,11 +276,24 @@ int main(){
         }
         //calculates the score of the word found if it is an actual word
         if(isWord(word)) {
-            printf("** %s\n", word);
+            addWord(word);
             score += calculateScore(word);
+            wordFoundFlag = 1;
+            wordCount++;
         }
 
-        printf("\n");
+        if(wordFoundFlag) {
+            printf("\nWORDS FOUND:\n");
+            for(int i = (nextIndex-1); i < (nextIndex-1) + wordCount; i++) {
+                printf("** %s\n", wordsFound[i]);
+            }
+
+            char input[5];
+            printf("\nEnter 'c' to continue... ");
+            scanf("%s", input);
+        }
+
+        printf("\n\n");
         return score;
     }
     
@@ -384,8 +427,21 @@ int main(){
     getPlayerMove(); //gets players' moves
 
     //when the game has ended
-    printf("\n *** GAME ENDED! *** \n");
-    printf("WINNER: ");
+    printf("\n\n *** GAME ENDED! *** \n");
+
+    printf("\nAll words found:\n");
+    for(int i = 0; i < nextIndex; i++) {
+        printf("    ** %s - ", wordsFound[i]);
+        free(wordsFound[i]);
+
+        if(player[i]) {
+            printf("Player two\n");
+        } else {
+            printf("Player one\n");
+        }
+    }
+
+    printf("\nWINNER: ");
 
     //displays winner(s) and their score(s)
     if(playersScores[0] > playersScores[1]) {
