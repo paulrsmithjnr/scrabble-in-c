@@ -14,6 +14,7 @@ int isOnBoard(int x, int y);
 int getLetterScore(char letter);
 char* getLetter(char letter);
 int isWord(char word[]);
+void printHeader();
 
 int main(){
 
@@ -30,6 +31,7 @@ int main(){
     //variables to help keep track of the current player and the players' scores
     int playersScores[2] = {0, 0}, currentPlayer = 0;
 
+    time_t startTime = time(NULL);//get start time for game
 
     void getNewBoard(){
         //creates a brand new blank board. Returns a pointer to the array 
@@ -297,6 +299,28 @@ int main(){
         printf("\n\n");
         return score;
     }
+
+
+    //This function starts the game by randomly placing ten letters on the board
+    void startBoard() {
+        getNewBoard();
+        
+        char alphabet[26] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
+
+        //the randomization is done here
+        for(int i = 0; i < 10; i++) {
+            int x = (rand()%8) + 1; //randomly chooses a number between 1 and 8
+            int y = (rand()%8) + 1; //randomly chooses a number between 1 and 8
+
+            int cIndex = rand()%26; //randomly chooses an index between 0 and 25
+            char character = alphabet[cIndex];
+            
+            makePlay(x, y, character);
+        }
+
+        drawBoard();
+    }
+
     
     //This function repeatedly prompts the players to enter 
     //their moves and keeps track of their scores until either someone ends the game
@@ -307,8 +331,30 @@ int main(){
         
         printf("SCORES:\n ** Player one: %d points\n ** Player two: %d points\n\n", playersScores[0], playersScores[1]);
         printf("PLAYER ONE'S TURN:\n");
-        printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
+        printf("\nEnter the letter you would like to play");
+        printf("\n(Enter 'quit' to end game | Enter 'rstr' to restart the game)");
+        printf("\nResponse: ");
         scanf("%s", letter);
+
+        if(strcmp(letter, "rstr") == 0) {
+            nextIndex = 0;
+
+            //resets the scores
+            playersScores[0] = 0;
+            playersScores[1] = 0;
+
+            currentPlayer = 0; //resets current player to player one
+            nextIndex = 0;
+            startTime = time(NULL); //resets the start time
+            printHeader();
+            startBoard(); //starts game
+            getPlayerMove(); //gets players' moves
+            return;
+        }
+
+        if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) {
+            return;
+        }
 
         while(1) { //loop infinitely
             char play = tolower(letter[0]);
@@ -316,8 +362,24 @@ int main(){
             if(isalpha(play) == 0) { //if they character entered is not a letter
                 printf("\n **** ERROR: Character entered is not a letter! ****\n\n");
                 
-                printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
+                printf("\nEnter the letter you would like to play");
+                printf("\n(Enter 'quit' to end game | Enter 'rstr' to restart the game)");
+                printf("\nResponse: ");
                 scanf("%s", letter);
+
+                if(strcmp(letter, "rstr") == 0) {
+                    //resets the scores
+                    playersScores[0] = 0;
+                    playersScores[1] = 0;
+
+                    currentPlayer = 0; //resets current player to player one
+                    nextIndex = 0;
+                    startTime = time(NULL); //resets the start time
+                    printHeader();
+                    startBoard(); //starts game
+                    getPlayerMove(); //gets players' moves
+                    return;
+                }
                 if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) { //if the current play entered "Quit" or "quit"
                     return;
                 } else {
@@ -331,8 +393,25 @@ int main(){
 
             if((isdigit(xy[0]) == 0) || (isdigit(xy[1]) == 0)) { //if the coordinates input contains a non-digit character
                 printf("\n **** ERROR: Invalid input! ****\n\n");
-                printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
+                printf("\nEnter the letter you would like to play");
+                printf("\n(Enter 'quit' to end game | Enter 'rstr' to restart the game)");
+                printf("\nResponse: ");
                 scanf("%s", letter);
+
+                if(strcmp(letter, "rstr") == 0) {
+                    //resets the scores
+                    playersScores[0] = 0;
+                    playersScores[1] = 0;
+
+                    currentPlayer = 0; //resets current player to player one
+                    nextIndex = 0;
+                    startTime = time(NULL); //resets the start time
+                    printHeader();
+                    startBoard(); //starts game
+                    getPlayerMove(); //gets players' moves
+                    return;
+                }
+
                 if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) {
                     return;
                 } else {
@@ -365,15 +444,49 @@ int main(){
                         printf("PLAYER ONE'S TURN:\n");
                     }
 
-                    printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
+                    printf("\nEnter the letter you would like to play");
+                    printf("\n(Enter 'quit' to end game | Enter 'rstr' to restart the game)");
+                    printf("\nResponse: ");
                     scanf("%s", letter);
+
+                    if(strcmp(letter, "rstr") == 0) {
+                        //resets the scores
+                        playersScores[0] = 0;
+                        playersScores[1] = 0;
+
+                        currentPlayer = 0; //resets current player to player one
+                        nextIndex = 0;
+                        startTime = time(NULL); //resets the start time
+                        printHeader();
+                        startBoard(); //starts game
+                        getPlayerMove(); //gets players' moves
+                        return;
+                    }
+
                     if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) { 
                         return;
                     }
                 } else { //if the referenced location already has a letter
                     printf("\n **** ERROR: A letter is already at the given location! ****\n\n");
-                    printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
+                    printf("\nEnter the letter you would like to play");
+                    printf("\n(Enter 'quit' to end game | Enter 'rstr' to restart the game)");
+                    printf("\nResponse: ");
                     scanf("%s", letter);
+
+                    if(strcmp(letter, "rstr") == 0) {
+                        //resets the scores
+                        playersScores[0] = 0;
+                        playersScores[1] = 0;
+
+                        currentPlayer = 0; //resets current player to player one
+                        nextIndex = 0;
+                        startTime = time(NULL); //resets the start time
+                        printHeader();
+                        startBoard(); //starts game
+                        getPlayerMove(); //gets players' moves
+                        return;
+                    }
+
                     if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) {
                         return;
                     } else {
@@ -383,8 +496,24 @@ int main(){
                 
             } else { //if the coordinates entered are out of bounds
                 printf("\n **** ERROR: Coordinates entered are not on board! ****\n\n");
-                printf("\nEnter the letter you would like to play (Enter 'Quit' to end game): ");
+                printf("\nEnter the letter you would like to play");
+                printf("\n(Enter 'quit' to end game | Enter 'rstr' to restart the game)");
+                printf("\nResponse: ");
                 scanf("%s", letter);
+
+                if(strcmp(letter, "rstr") == 0) {
+                    //resets the scores
+                    playersScores[0] = 0;
+                    playersScores[1] = 0;
+
+                    currentPlayer = 0; //resets current player to player one
+                    nextIndex = 0;
+                    startTime = time(NULL); //resets the start time
+                    printHeader();
+                    startBoard(); //starts game
+                    getPlayerMove(); //gets players' moves
+                    return;
+                }
                 if((strcmp(letter, "Quit") == 0) || (strcmp(letter, "quit") == 0)) {
                     return;
                 } else {
@@ -396,36 +525,8 @@ int main(){
         }
     }
 
-    //This function starts the game by randomly placing ten letters on the board
-    void startBoard() {
-        getNewBoard();
-        
-        char alphabet[26] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
-
-        //the randomization is done here
-        for(int i = 0; i < 10; i++) {
-            int x = (rand()%8) + 1; //randomly chooses a number between 1 and 8
-            int y = (rand()%8) + 1; //randomly chooses a number between 1 and 8
-
-            int cIndex = rand()%26; //randomly chooses an index between 0 and 25
-            char character = alphabet[cIndex];
-            
-            makePlay(x, y, character);
-        }
-
-        drawBoard();
-    }
-
-    printf("\n ************************************************\n\n");
-    printf("                  MyScrabble\n\n");
-    printf(" ************************************************\n\n");
-
-    printf(" HOW TO PLAY:\n\n");
-    printf("\tThe aim of the game is to spell words with \n\t4 or more letters. Each letter has");
-    printf(" a value,\n\tso therefore, a player's score for a word\n\tis calculated by using these values.\n\n");
-
+    printHeader(); //prints game header
     startBoard(); //starts game
-    time_t startTime = time(NULL);
     getPlayerMove(); //gets players' moves
 
     //when the game has ended
@@ -434,24 +535,34 @@ int main(){
     int timeDifference = difftime(endTime, startTime);
 
     if(timeDifference < 60) {
-        printf("Play Time: %d seconds\n", timeDifference);
+        printf("Total Play Time: %d seconds\n", timeDifference);
     } else {
         int minutes = timeDifference/60;
         int seconds = timeDifference%60;
 
-        printf("Play Time: %d minutes and %d seconds\n", minutes, seconds);
+        if((minutes > 1) && (seconds > 1))
+            printf("Play Time: %d minutes and %d seconds\n", minutes, seconds);
+        else if((minutes > 1) && (seconds == 1))
+            printf("Play Time: %d minutes and %d second\n", minutes, seconds);
+        else if((minutes == 1) && (seconds > 1))
+            printf("Play Time: %d minute and %d seconds\n", minutes, seconds);
+        else if((minutes == 1) && (seconds == 1))
+            printf("Play Time: %d minute and %d second\n", minutes, seconds);
     }
     
+    if(nextIndex == 0) {
+        printf("\nNo words found!\n");
+    } else {
+        printf("\nAll words found:\n");
+        for(int i = 0; i < nextIndex; i++) {
+            printf("    ** %s - ", wordsFound[i]);
+            free(wordsFound[i]);
 
-    printf("\nAll words found:\n");
-    for(int i = 0; i < nextIndex; i++) {
-        printf("    ** %s - ", wordsFound[i]);
-        free(wordsFound[i]);
-
-        if(player[i]) {
-            printf("Player two\n");
-        } else {
-            printf("Player one\n");
+            if(player[i]) {
+                printf("Player two\n");
+            } else {
+                printf("Player one\n");
+            }
         }
     }
 
@@ -467,6 +578,18 @@ int main(){
     }
 
     return 0;
+}
+
+//This function prints the game's header
+void printHeader() {
+    system("clear"); //clears terminal
+    printf("\n ************************************************\n\n");
+    printf("                  MyScrabble\n\n");
+    printf(" ************************************************\n\n");
+
+    printf(" HOW TO PLAY:\n\n");
+    printf("\tThe aim of the game is to spell words with \n\t4 or more letters. Each letter has");
+    printf(" a value,\n\tso therefore, a player's score for a word\n\tis calculated by using these values.\n\n");
 }
 
 //This function calculates the score for the word passed to it
