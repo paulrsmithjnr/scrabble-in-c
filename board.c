@@ -6,6 +6,7 @@ Paul Smith
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <time.h>
 
 //Function Declarations
 int calculateScore(char * word);
@@ -424,10 +425,23 @@ int main(){
     printf(" a value,\n\tso therefore, a player's score for a word\n\tis calculated by using these values.\n\n");
 
     startBoard(); //starts game
+    time_t startTime = time(NULL);
     getPlayerMove(); //gets players' moves
 
     //when the game has ended
-    printf("\n\n *** GAME ENDED! *** \n");
+    printf("\n\n *** GAME ENDED! *** \n\n");
+    time_t endTime = time(NULL);
+    int timeDifference = difftime(endTime, startTime);
+
+    if(timeDifference < 60) {
+        printf("Play Time: %d seconds\n", timeDifference);
+    } else {
+        int minutes = timeDifference/60;
+        int seconds = timeDifference%60;
+
+        printf("Play Time: %d minutes and %d seconds\n", minutes, seconds);
+    }
+    
 
     printf("\nAll words found:\n");
     for(int i = 0; i < nextIndex; i++) {
@@ -445,11 +459,11 @@ int main(){
 
     //displays winner(s) and their score(s)
     if(playersScores[0] > playersScores[1]) {
-        printf("Player one with %d points\n", playersScores[0]);
+        printf("Player one with %d points!\n", playersScores[0]);
     } else if(playersScores[0] < playersScores[1]) {
-        printf("Player two with %d points\n", playersScores[1]);
+        printf("Player two with %d points!\n", playersScores[1]);
     } else {
-        printf("Players one and two (TIE) with %d points\n", playersScores[0]);
+        printf("Players one and two (TIE) with %d points!\n", playersScores[0]);
     }
 
     return 0;
