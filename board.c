@@ -105,7 +105,7 @@ int main(){
 
     //This function checks every direction to see if the last  
     //letter entered starts a word (diagonals are included)
-    int checkWords(int x, int y) {
+    int checkForWords(int x, int y) {
         int a = x - 1;
         int b = y - 1;
         int score = 0; //Keeps track of the score generated from all the words found
@@ -331,8 +331,8 @@ int main(){
         
         printf("SCORES:\n ** Player one: %d points\n ** Player two: %d points\n\n", playersScores[0], playersScores[1]);
         printf("PLAYER ONE'S TURN:\n");
-        printf("\nEnter the letter you would like to play");
-        printf("\n(Enter 'quit' to end game | Enter 'rstr' to restart the game)");
+        printf("\nEnter the letter you would like to play!");
+        printf("\n(Input 'quit' to end game | Input 'rstr' to restart the game)");
         printf("\nResponse: ");
         scanf("%s", letter);
 
@@ -362,8 +362,8 @@ int main(){
             if(isalpha(play) == 0) { //if they character entered is not a letter
                 printf("\n **** ERROR: Character entered is not a letter! ****\n\n");
                 
-                printf("\nEnter the letter you would like to play");
-                printf("\n(Enter 'quit' to end game | Enter 'rstr' to restart the game)");
+                printf("\nEnter the letter you would like to play!");
+                printf("\n(Input 'quit' to end game | Input 'rstr' to restart the game)");
                 printf("\nResponse: ");
                 scanf("%s", letter);
 
@@ -393,8 +393,8 @@ int main(){
 
             if((isdigit(xy[0]) == 0) || (isdigit(xy[1]) == 0)) { //if the coordinates input contains a non-digit character
                 printf("\n **** ERROR: Invalid input! ****\n\n");
-                printf("\nEnter the letter you would like to play");
-                printf("\n(Enter 'quit' to end game | Enter 'rstr' to restart the game)");
+                printf("\nEnter the letter you would like to play!");
+                printf("\n(Input 'quit' to end game | Input 'rstr' to restart the game)");
                 printf("\nResponse: ");
                 scanf("%s", letter);
 
@@ -426,7 +426,7 @@ int main(){
             if (isOnBoard(x, y)) {//if the coordinates entered are not out of bounds
                 if(grid[x-1][y-1] == ' ') { //if the referenced location does not have a letter
                     makePlay(x, y, play);
-                    playersScores[currentPlayer] += checkWords(x, y); //increments the current player's score based on the scores of the words found
+                    playersScores[currentPlayer] += checkForWords(x, y); //increments the current player's score based on the scores of the words found
                     drawBoard();
 
                     //displays scores
@@ -444,8 +444,8 @@ int main(){
                         printf("PLAYER ONE'S TURN:\n");
                     }
 
-                    printf("\nEnter the letter you would like to play");
-                    printf("\n(Enter 'quit' to end game | Enter 'rstr' to restart the game)");
+                    printf("\nEnter the letter you would like to play!");
+                    printf("\n(Input 'quit' to end game | Input 'rstr' to restart the game)");
                     printf("\nResponse: ");
                     scanf("%s", letter);
 
@@ -468,8 +468,8 @@ int main(){
                     }
                 } else { //if the referenced location already has a letter
                     printf("\n **** ERROR: A letter is already at the given location! ****\n\n");
-                    printf("\nEnter the letter you would like to play");
-                    printf("\n(Enter 'quit' to end game | Enter 'rstr' to restart the game)");
+                    printf("\nEnter the letter you would like to play!");
+                    printf("\n(Input 'quit' to end game | Input 'rstr' to restart the game)");
                     printf("\nResponse: ");
                     scanf("%s", letter);
 
@@ -496,8 +496,8 @@ int main(){
                 
             } else { //if the coordinates entered are out of bounds
                 printf("\n **** ERROR: Coordinates entered are not on board! ****\n\n");
-                printf("\nEnter the letter you would like to play");
-                printf("\n(Enter 'quit' to end game | Enter 'rstr' to restart the game)");
+                printf("\nEnter the letter you would like to play!");
+                printf("\n(Input 'quit' to end game | Input 'rstr' to restart the game)");
                 printf("\nResponse: ");
                 scanf("%s", letter);
 
@@ -582,7 +582,7 @@ int main(){
 
 //This function prints the game's header
 void printHeader() {
-    system("clear"); //clears terminal
+    system("clear"); //clears (ubuntu) terminal
     printf("\n ************************************************\n\n");
     printf("                  MyScrabble\n\n");
     printf(" ************************************************\n\n");
